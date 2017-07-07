@@ -8,6 +8,7 @@ body#main{
 /*    background: url('images/mainpage_bg.jpg');*/
     font-family: Roboto, Helvetica, sans-serif;
     color: #282828;
+    font-weight: bold;
 }
 
 #cantfind{
@@ -123,46 +124,6 @@ button:hover {
 }
 
 
-.circlebase {
-    border-radius: 50%;
-}
-
-.type1 {
-    width: 90px;
-    height: 90px;
-    background: #de1f36;
-}
-
-.fancyfade{
-position: relative;
-    width: 90px;
-}
-
-.fancyfade:hover .overlay {
-  opacity: 1;
-}
-
-.overlay{
-    
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 90px;
-  width: 90px;
-  opacity: 0;
-  transition: .5s ease;
-  background-color: #de1f36;
-
-}
-
-.text{
-  color: white;
-  font-size: 15px;
-  position: absolute;
- margin: 36px 5px 10px 15px;    
-}
 
 #infoArea{
     width: 580px;
@@ -224,15 +185,20 @@ input[type="submit"]#save{
 }
 
 a:link{
+    font-weight: 300;
     color: #de1f36;
 }
 a:visited{
+    font-weight: 300;
     color: #de1f36;
 }
 a:hover{
+    font-weight: 300;
     color: #777;
 }
 a:active{
+    font-weight: 300;
     color: #de1f36;
 }
+
 

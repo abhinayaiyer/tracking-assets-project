@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>main_page</title>
+    <link rel="stylesheet" type="text/css" href="mainpage.css">
+    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
+    <!--[if IE]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+</script>
+    <![endif]-->
+</head>
+
+<body id="main">
+    <div>
+        <nav id="header">
+            <ul>
+                <!--             <li><img src="images/trackassets2.png"></li>-->
+                <li><a href="main_page.html">Locate Assets</a></li>
+                <li><a href="add_asset.html">Add Asset</a></li>
+                <li><a href="add_device.html">Add Device</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div>
+        <h1 id="logo">Locate Asset</h1> </div>
+    <!--
+      	<div id="drillDownAsset" style="height:80px;width:750px;padding:5px;border:solid 1px #de1f36;margin:5px auto;">
+
+</div>    
+-->
+    <div id="container">
+        <!--The below code is for search bar-->
+        <form id="find" method="post">
+            <div style="width:80%; float:left;">
+                <input type="text" id="searchAssetType" placeholder="search asset types"> </div>
+            <div style="width:20%; float:right;">
+                <button type="button" onclick="loadDoc()">Search</button>
+            </div>
+            <div style="clear:both"></div>
+        </form>
+        <!--to split screen into three, create a table. I'm using 2 rows (because there are six icons and 3 in each) and three columns-->
+        <table id="split">
+            <tr>
+                <th colspan="3">Asset Type</th>
+                <th>Assets of this type</th>
+                <th>Location Details</th>
+            </tr>
+            <tr>
+                <td>
+                    <!--split this cell three ways to accomodate 3 icons-->
+                    <a href="javascript:void(0)" class="btn-asset-type" data-asset="Trailer"><img src="images/assettypes/trailer-bfc.png" alt="trailer" id="trailer"></a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="btn-asset-type" data-asset="Intermodal Container"><img src="images/assettypes/intermodal-bfc.png" alt="intermodal" id="intermodal"></a>
+                    <td>
+                        <a href="javascript:void(0)" class="btn-asset-type" data-asset="Coldchain Equipment"><img src="images/assettypes/coldchain-bfc.png" alt="coldchain" id="coldchain"></a>
+                    </td>
+                    <td id="drillDownAsset"> </td>
+                    <td id="locationDetails"> </td>
+            </tr>
+            <tr>
+                <td>
+                    <!--split this cell three ways to accomodate 3 icons-->
+                    <a href="javascript:void(0)" class="btn-asset-type" data-asset="Heavy Equipment"><img src="images/assettypes/heavy-bfc.png" alt="heavyequip" id="heavy"></a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="btn-asset-type" data-asset="Oil and Gas"><img src="images/assettypes/oil_and_gas-bfc.png" alt="oil_and_gas" id="oil_and_gas"></a>
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="btn-asset-type" data-asset="Maritime"><img src="images/assettypes/maritime-bfc.png" alt="maritime_equip" id="maritime"> </a>
+                </td>
+                <td id="drillDownAsset"> </td>
+                <td> </td>
+            </tr>
+        </table>
+    </div>
+    <!--to get data-->
+    <script src="assets/plugins/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $(".btn-asset-type").click(function () {
+//            alert($(this).data("asset")); //here asset is asset type 
+            var asset_type = $(this).data("asset");
+            fetchAssetNos(asset_type);
+        });
+        
+        //to highlight button
+               $(document).ready(function(){
+    $('#trailer').click(function(){
+    $('#trailer').attr('src', 'images/assettypes/trailer-wc.png');
+    });
+})
+                    
+  $(document).ready(function(){
+    $('#intermodal').click(function(){
+    $('#intermodal').attr('src', 'images/assettypes/intermodal-wc.png');
+    
+    });
+    $('#trailer').attr('src', 'images/assettypes/trailer-bfc.png');
+      
+}),          
+        
+        
+            $(document).ready(function(){
+    $('#coldchain').click(function(){
+    $('#coldchain').attr('src', 'images/assettypes/coldchain-wc.png');
+    });
+      
+})
+//        }
+//        else if(id="heavy"){
+//                        $(document).ready(function(){
+//            $('#heavy').click(function(){
+//    $('#heavy').attr('src', 'images/assettypes/heavy-wc.png');
+//    });
+//                        })
+//        }
+//        else if(id="oil_and_gas"){
+//                        $(document).ready(function(){
+//
+//            $('#oil_and_gas').click(function(){
+//    $('#oil_and_gas').attr('src', 'images/assettypes/oil_and_gas-wc.png');
+//    });
+//                        })
+//
+//        }
+//else{
+//    $(document).ready(function(){
+//
+//            $('#maritime').click(function(){
+//    $('#maritime').attr('src', 'images/assettypes/maritime-wc.png');
+//    });
+//                        })
+//}
+//        
+
+        function fetchAssetNos(asset) {
+            var getUrl = "/getAssetData/" + asset;
+            $.get(getUrl, function (data) {
+              console.log(data);
+                //                alert("Load was performed.");
+                if (data.length <= 0) {
+                    $("#drillDownAsset").html("no records found for this type.");
+                }
+                else {
+                    $("#drillDownAsset").html("");
+                    for (var i = 0; i < data.length; i++) {
+                        var dynamicEl = "<a href='javascript:void(0)' class='btn-asset-sno btn btn-block' data-id=" + data[i]._id + ">" + data[i].asset_sno + "</a>"
+                            //dynamically getting asset_snos and making them clickable
+                        $("#drillDownAsset").append(dynamicEl);
+                    }
+                    $(".btn-asset-sno").click(locationDetailsEvent);
+                }
+            });
+        }
+
+        function locationDetailsEvent() {
+            var objectId = $(this).data("id");
+            console.log(objectId);
+            var locationDetailsElement = $("#locationDetails")
+            $.ajax({
+                type: "GET"
+                , url: "/getData/" + objectId
+                , success: function (response) {
+                    console.log(response);
+                    var elemnt = "Source: " + response.location_source;
+                    elemnt +="<br>"+"Destination: " + response.location_destination;
+                    locationDetailsElement.html(elemnt);
+                }
+            });
+        }
+    </script>
+    </body>
+        </html>
